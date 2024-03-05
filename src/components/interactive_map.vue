@@ -3,7 +3,7 @@
       <div class="map-container" ref="mapContainer"></div>
     </section>
   </template>
-  
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
   <script>
   import * as THREE from 'three';
   import { MapboxLayer } from 'mapbox-gl';

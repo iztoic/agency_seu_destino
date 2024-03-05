@@ -31,13 +31,13 @@
 
 		<div class="layerindex page_about-section">
 			<div class="about-close hover-target"></div>
-			<!-- <SectionAbout />
-			<SectionTeam /> -->
+			<SectionAbout />
+			<SectionTeam />
 		</div>
 
 		<div class="layerindex page_contact-section">
 			<div class="contact-close hover-target"></div>
-			<!-- <SectionContact /> -->
+			<SectionContact />
 		</div>
 
 		<div class='cursor' id="cursor"></div>
@@ -55,7 +55,8 @@
             </div>
         </div>
     </div>
-	</div>
+</div>
+
 	</div>
 </template>
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
@@ -67,14 +68,14 @@
 <script src="https://raw.githubusercontent.com/IronSummitMedia/startbootstrap/gh-pages/templates/agency/js/bootstrap.min.js"></script>
 <script>
 import InteractiveMap from './components/interactive_map.vue';
-// import SectionAbout from './components/section_about.vue';
-// import SectionContact from './components/section_contact.vue';
+import SectionAbout from './components/section_about.vue';
+import SectionContact from './components/section_contact.vue';
 export default {
 	name: 'app',
 	components: {
 		SectionAbout,
-		// InteractiveMap,
-		// SectionContact,
+		InteractiveMap,
+		SectionContact,
 	},
 
 	data() {
@@ -355,7 +356,7 @@ a:hover {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 30px 30px;
-	/* background-image: url('src/assets/img//down.svg'); */
+	background-image: url('src/assets/img//down.svg');
 	opacity: 0.2;
 	-webkit-transition: all 200ms linear;
 	transition: all 200ms linear;
@@ -439,7 +440,7 @@ body.page_clients-on .main-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 30px 30px;
-	/* background-image: url('src/assets/img/left.svg'); */
+	background-image: url('src/assets/img/left.svg');
 	opacity: 0.2;
 	-webkit-transition: all 200ms linear;
 	transition: all 200ms linear;
@@ -484,7 +485,7 @@ body.about-on .page_about-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 36px 36px;
-	/* background-image: url('src/assets/img/close.svg'); */
+	background-image: url('src/assets/img/close.svg');
 	cursor: pointer;
 	z-index: 11;
 }
@@ -549,7 +550,7 @@ body.about-on .page_about-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 30px 30px;
-	/* background-image: url('src/assets/img/left.svg'); */
+	background-image: url('src/assets/img/left.svg');
 	opacity: 0.2;
 	-webkit-transition: all 200ms linear;
 	transition: all 200ms linear;
@@ -561,7 +562,7 @@ body.about-on .page_about-section {
 }
 
 .page_clients-section{
-	/* background-image: url('src/assets/img/wallpaper_clients.jpg'); */
+	background-image: url('src/assets/img/wallpaper_clients.jpg');
 	background-size: cover;
 	background-position: center;
 }
@@ -600,7 +601,7 @@ body.contact-on .page_contact-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 36px 36px;
-	/* background-image: url('src/assets/img/close.svg'); */
+	background-image: url('src/assets/img/close.svg');
 	cursor: pointer;
 	z-index: 11;
 }
@@ -675,7 +676,7 @@ body.contact-on .page_contact-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 36px 36px;
-	/* background-image: url('src/assets/img/close.svg'); */
+	background-image: url('src/assets/img/close.svg');
 	cursor: pointer;
 	z-index: 11;
 }
@@ -993,6 +994,7 @@ ul.social-buttons li a:active {
     left: 0;
     width: 100%;
     height: 100%;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), url('src/assets/portifolio/wine_bar.jpg');
     transition: background-color 0.75s;
     z-index: 1;
 }
@@ -1031,4 +1033,6 @@ ul.social-buttons li a:active {
     background-color: #d7a449; /* Cor da linha da barra de rolagem */
     border-radius: 6px; /* Borda arredondada da linha */
 }
+
+
 </style>

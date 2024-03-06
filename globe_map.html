@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency_map</title>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css">
+    <style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; inset: 0; }
+#controls {
+	position: fixed;
+	top: 50%;
+	height: 140px;
+	left: 0;
+	right: 0;
+	margin-top: -70px;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 2vw;
+	font-size: 64px;
+}
+
+#controls .cta {
+	pointer-events: all;
+	cursor: pointer;
+	opacity: 0.614;
+	user-select: none;
+}
+
+#controls .cta:hover {
+	opacity: 1;
+}
+
+#controls:before,
+#controls:after {
+	content: "";
+	display: block;
+	height: 1px;
+	background-color: var(--fade);
+	position: absolute;
+	filter: invert(90%);
+}
+
+#controls:before {
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+#controls:after {
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.source {
+	display: block;
+	position: absolute;
+	top: 1vw;
+	right: 1vw;
+	font-size: 14px;
+}
+
+#title {
+	position: absolute;
+	top: 4vw;
+	left: 4vw;
+	right: 4vw;
+	font-size: 7.5vw;
+	font-family: sans-serif;
+	font-weight: 900;
+	opacity: 0.314;
+	line-height: 1;
+}
+
+#timeline {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+}
+
+#timeline:hover {
+	opacity: 1;
+}
+
+#timeline:before {
+	content: "";
+	border: 1px solid var(--fade);
+	opacity: 0.314;
+	display: block;
+	position: relative;
+	top: 25px;
+}
+
+#timeline .helper {
+	display: flex;
+}
+
+#timeline .date {
+	width: 20px;
+	display: block;
+	transform: rotate(-70deg);
+	transform-origin: 0 50%;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	font-family: sans-serif;
+}
+
+#timeline .date .label {
+	opacity: 0.314;
+	transition: opacity 0.3s linear, transform 0.3s ease;
+	text-shadow: 0 0 4px white,  0 0 4px white;
+	display: block;
+}
+
+#timeline .date:before {
+	content: "";
+	display: block;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	position: absolute;
+	right: 100%;
+	top: 4px;
+	margin-right: 14px;
+	background-color: #afafaf;
+}
+
+#timeline .date.active .label {
+	opacity: 0.75;
+	transform: translateX(5px);
+}
+
+#timeline .date.active:before {
+	background-color: #000;
+}
+
+#timeline .date:hover .label {
+	opacity: 1;
+}
+
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+<div id="controls">
+	<div class="prev cta" >◀</div>
+	<div class="next cta">▶</div>
+</div>
+<div id="timeline">
+	<div class="helper">
+	</div>
+</div>
+</body>
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js?r=5426"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/SplitText3.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/Draggable3.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/InertiaPlugin.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ThrowPropsPlugin.min.js"></script>
+<script>
+    const geoJSONData =  {
+	type: 'geojson',
+	data: {
+		type: 'FeatureCollection',
+		features: [
+			{
+				type: 'Feature',
+				properties: {
+					name: 'Joinville',
+					date: '20/09/2024'
+				},
+				geometry: {
+					type: 'Point',
+					coordinates: [-48.8489, -26.3045]
+				}
+			},
+			{
+				type: 'Feature',
+				properties: {
+					name: 'Curitiba',
+					date: '20/09/2024'
+				},
+				geometry: {
+					type: 'Point',
+					coordinates: [-49.2733, -25.4284]
+				}
+			},
+			{
+				type: 'Feature',
+				properties: {
+					name: 'São Paulo',
+					date: '20/09/2024',
+					type: 'stopover'
+				},
+				geometry: {
+					type: 'Point',
+					coordinates: [-46.6333, -23.5505]
+				}
+			},
+			{
+				type: 'Feature',
+				properties: {
+					name: 'Madri',
+					date: '21/09/2024'
+				},
+				geometry: {
+					type: 'Point',
+					coordinates: [-3.7038, 40.4168]
+				}
+			},
+			{
+				type: 'Feature',
+				properties: {
+					name: 'Abu Dhabi',
+					date: '22/09/2024'
+				},
+				geometry: {
+					type: 'Point',
+					coordinates: [54.3773, 24.4539]
+				}
+			},
+			{
+				type: 'Feature',
+				properties: {
+					name: 'Sidney',
+					date: '23/09/2024'
+				},
+				geometry: {
+					type: 'Point',
+					coordinates: [151.2093, -33.8688]
+				}
+			}
+		]
+	}
+};
+
+let idx = 0;
+const initFeature = geoJSONData.data.features[idx];
+
+const $prev = document.body.querySelector('.prev');
+const $next = document.body.querySelector('.next');
+const $title = document.body.querySelector('#title');
+const $timeline = document.body.querySelector('#timeline');
+
+setTitle(initFeature.properties.name);
+$timelineHelper = $timeline.querySelector('.helper');
+geoJSONData.data.features.forEach((datum, index) => {
+	const { date } = datum.properties;
+	const $span =	document.createElement('span');
+	$span.classList.add('date')
+	$label = document.createElement('span');
+	$label.classList.add('label')
+	$label.innerHTML = date;
+	$span.appendChild($label);
+	$timelineHelper.appendChild($span);
+	$span.addEventListener('click', () => moveToIndex(index));
+	if (index <  geoJSONData.data.features.length - 1) {
+		const { date: nextDate } = geoJSONData.data.features[index + 1].properties;
+		const cur = new Date(date.split('/').reverse().join('-')).getTime();
+		const next = new Date(nextDate.split('/').reverse().join('-')).getTime();
+		const $fillerTime =	document.createElement('span');
+		$fillerTime.classList.add('filler')
+		
+    var delta = next - cur;
+    var days = delta / (1000 * 3600 * 24);
+		$fillerTime.style.width = `${days * 12}px`
+		$timelineHelper.appendChild($fillerTime);
+	}
+});
+
+const w = window.innerWidth / 2;
+let snaps = gsap.utils.toArray(".date").map((date) => {
+	return w - date.offsetLeft
+});
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibnlrMTIzIiwiYSI6ImNrdmhmd25qdjJpa2sydXMxMHN3cTF6NTYifQ.S4nAVug9JCv9pCj8oww6wA';
+
+const map = new mapboxgl.Map({
+	container: 'map',
+	style: 'mapbox://styles/mapbox/satellite-streets-v12',
+	// style: "https://raw.githubusercontent.com/mapbox/mapbox-gl-vintage-style/master/cif5p01n202nisaktvljx9mv3.json",
+	center: initFeature.geometry.coordinates,
+	zoom: 2,
+	antialias: true
+});
+
+map.on('style.load', () => {
+	const layers = map.getStyle().layers;
+	let firstSymbolId;
+	for (const layer of layers) {
+		if (layer.type === 'symbol') {
+			firstSymbolId = layer.id;
+			break;
+		}
+	}
+	map.addSource('sites', geoJSONData);
+	
+	map.addSource('route', {
+		'type': 'geojson',
+		'data': {
+			'type': 'Feature',
+			'properties': {},
+			'geometry': {
+				'type': 'LineString',
+				'coordinates': geoJSONData.data.features
+					.map(
+						(_, index) => {
+							const { coordinates } = _.geometry;
+							const [x, y] = coordinates;
+							// https://docs.mapbox.com/mapbox-gl-js/example/line-across-180th-meridian/ (antimeridian)
+							return index < 10 ? [x, y] : [x - 360, y];
+						}
+					)
+			}
+		}
+	});
+	map.addLayer({
+		'id': 'route',
+		'type': 'line',
+		'source': 'route',
+		'layout': {
+			'line-join': 'round',
+			'line-cap': 'round'
+		},
+		'paint': {
+			'line-color': '#888',
+			'line-width': 2
+		}
+	}, firstSymbolId);
+	map.addLayer({
+		'id': 'sites',
+		'type': 'circle',
+		'source': 'sites',
+		'paint': {
+			'circle-radius': 6,
+			'circle-color': '#ff5b00',
+			'circle-opacity': 1,
+			'circle-stroke-color': '#7c7d7e',
+			'circle-stroke-width': 2
+		},
+	}, firstSymbolId);
+	map.addLayer({
+		'id': 'site-labels',
+		'type': 'symbol',
+		'source': 'sites',
+		'layout': {
+			'text-field': ['get', 'name'],
+			'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+			'text-radial-offset':1,
+			'text-justify': 'auto',
+		},
+		'paint': {
+			'text-color': '#202',
+			'text-halo-color': '#fff',
+			'text-halo-width': 1.5
+		},
+	});
+});
+
+$prev.addEventListener('click', () => {
+	const newIdx = (idx === 0 ? geoJSONData.data.features.length : idx) - 1
+	moveToIndex(newIdx);
+})
+$next.addEventListener('click', () => {
+	const newIdx = (idx + 1) % geoJSONData.data.features.length;
+	moveToIndex(newIdx);
+})
+
+function moveToIndex(newIdx, ignoreDrag = false) {
+	const { coordinates } = geoJSONData.data.features[newIdx].geometry;
+	const [x, y] = coordinates;
+	const center = [x, y];
+	
+	// https://docs.mapbox.com/mapbox-gl-js/example/line-across-180th-meridian/ (antimeridian) need refacto
+	if (newIdx === 10 && idx === 9) {
+		center[0] -= 360;
+	}
+	if (newIdx === 9 && idx === 10) {
+		center[0] += 360;
+	}
+	map.flyTo({
+		duration: 1000,
+		essential: true,
+		center,
+		// easing(t) {
+		//   return -0.5 * (Math.cos(Math.PI * t) - 1.0);
+		// }
+	});
+	
+	setTitle( geoJSONData.data.features[newIdx].properties.name);
+	
+	if (!ignoreDrag) {
+		gsap.to($timelineHelper, { x: snaps[newIdx] });
+	}
+	gsap.utils.toArray(".date").forEach(_ => {
+		_.classList.remove('active');
+	})
+	if (tl) {
+		if (newIdx === 0 && idx === geoJSONData.data.features.length - 1) {
+		  gsap.killTweensOf(tl);
+			tl.seek(0, false);
+		} else if (newIdx === geoJSONData.data.features.length - 1 && idx === 0) {			
+		  gsap.killTweensOf(tl);
+			tl.seek(tl.duration(), false);			
+		} else {
+			tl.tweenTo(`step-${newIdx}`, {duration: 1, ease: 'sine.inOut'});
+		}
+	}
+	gsap.utils.toArray(".date")[newIdx].classList.add('active')
+	idx = newIdx
+}
+
+function setTitle(text) {
+	const tl = gsap.timeline()
+	
+	tl
+		.to($title, {
+			alpha: 0,
+			duration: 0.3,
+			onComplete() {
+				$title.innerHTML = text;
+				const splits = new SplitText($title, { 
+					type: "words,chars",
+				});
+				gsap.set($title, { alpha: 1 });				
+				gsap.set(splits.chars, { alpha: 0 });
+				tl.to(splits.chars, { alpha: 0.314, stagger: 0.05 });
+			}
+		}, 'a')
+}
+
+gsap.set($timelineHelper, { x: w });
+const draggable = Draggable.create($timelineHelper, {
+  type: "x",
+  trigger: $timeline,
+  inertia: true,
+  snap: { 
+    x: snaps
+  },
+	onDragEnd:function() {
+		const newIdx = snaps.indexOf(this.endX);
+		moveToIndex(newIdx, true);
+	}
+});
+
+window.addEventListener('resize', () => {
+const w = window.innerWidth / 2;
+	snaps = gsap.utils.toArray(".date").map((date) => {
+		return w - date.offsetLeft
+	});
+	draggable[0].vars.snap.x = snaps;
+	gsap.set($timelineHelper, {
+		x: snaps[idx]
+	});
+});
+
+
+
+var el = document.createElement('div');
+el.className = 'marker';
+
+// Crie um elemento de imagem
+var img = document.createElement('img');
+img.src = 'airplane.png'; // Substitua 'caminho/para/sua/imagem.jpg' pelo caminho correto da sua imagem
+img.style.width = '40px';
+img.style.height = '40px';
+
+// Adicione a imagem ao elemento div
+el.appendChild(img);
+
+// Adicione estilos adicionais, se necessário
+el.style.width = '30px';
+el.style.height = '30px';
+el.style.textAlign = 'center';
+
+const marker = new mapboxgl.Marker(el)
+	.setLngLat(initFeature.geometry.coordinates)
+	.addTo(map);
+
+
+const lineString = geoJSONData.data.features
+	.map(
+	(_, index) => {
+		const { coordinates } = _.geometry;
+		const [x, y] = coordinates;
+		// https://docs.mapbox.com/mapbox-gl-js/example/line-across-180th-meridian/ (antimeridian)
+		return index < 10 ? [x, y] : [x - 360, y];
+	}
+);
+
+const tl = new gsap.timeline({
+ paused: true
+});
+lineString.forEach((coords, index) => {
+	if (index <  geoJSONData.data.features.length - 1) {
+		const nextCoords = lineString[index + 1];
+		// at city scale you can't see the difference but at world level, there is a deformation in the variation of projection and the drew line between two points especially when you get closer to N/S poles because Turf and mapbox by default doesn't seem to use the same maths for calculation in certains projections.
+		var projectedCoords = turf.toWgs84(turf.point(coords));
+		var projectedNextCoords = turf.toWgs84(turf.point(nextCoords));
+		var line = turf.lineString([projectedCoords.geometry.coordinates, projectedNextCoords.geometry.coordinates]);
+		var length = turf.length(line);
+		const attrs = {
+			delta: 0
+		}
+		tl
+			.to(attrs, {
+				delta: length,
+				onUpdate() {
+					var along = turf.toMercator(turf.along(line, attrs.delta));
+					marker.setLngLat(along.geometry.coordinates)
+				}
+			},
+			`step-${index}`
+		);
+	}
+	
+})
+
+</script>
+</html>

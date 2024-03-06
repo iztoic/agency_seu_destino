@@ -31,13 +31,13 @@
 
 		<div class="layerindex page_about-section">
 			<div class="about-close hover-target"></div>
-			<SectionAbout />
-			<SectionTeam />
+			<!-- <SectionAbout />
+			<SectionTeam /> -->
 		</div>
 
 		<div class="layerindex page_contact-section">
 			<div class="contact-close hover-target"></div>
-			<SectionContact />
+			<!-- <SectionContact /> -->
 		</div>
 
 		<div class='cursor' id="cursor"></div>
@@ -51,7 +51,7 @@
         <div class="loading-content">
             <div class="loading-progress" :style="{ width: progress + '%' }"></div>
             <div class="loading-title">
-                <LoaderLogo />
+                <!-- <LoaderLogo /> -->
             </div>
         </div>
     </div>
@@ -65,17 +65,18 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
 <script src="https://raw.githubusercontent.com/IronSummitMedia/startbootstrap/gh-pages/templates/agency/js/bootstrap.min.js"></script>
 <script>
 import InteractiveMap from './components/interactive_map.vue';
-import SectionAbout from './components/section_about.vue';
-import SectionContact from './components/section_contact.vue';
+// import SectionAbout from './components/section_about.vue';
+// import SectionContact from './components/section_contact.vue';
 export default {
 	name: 'app',
 	components: {
-		SectionAbout,
+		// SectionAbout,
 		InteractiveMap,
-		SectionContact,
+		// SectionContact,
 	},
 
 	data() {

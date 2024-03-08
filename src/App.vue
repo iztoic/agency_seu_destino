@@ -31,13 +31,13 @@
 
 		<div class="layerindex page_about-section">
 			<div class="about-close hover-target"></div>
-			<!-- <SectionAbout />
-			<SectionTeam /> -->
+			<SectionAbout />
+			<SectionTeam />
 		</div>
 
 		<div class="layerindex page_contact-section">
 			<div class="contact-close hover-target"></div>
-			<!-- <SectionContact /> -->
+			<SectionContact />
 		</div>
 
 		<div class='cursor' id="cursor"></div>
@@ -51,7 +51,6 @@
         <div class="loading-content">
             <div class="loading-progress" :style="{ width: progress + '%' }"></div>
             <div class="loading-title">
-                <!-- <LoaderLogo /> -->
             </div>
         </div>
     </div>
@@ -69,14 +68,14 @@
 <script src="https://raw.githubusercontent.com/IronSummitMedia/startbootstrap/gh-pages/templates/agency/js/bootstrap.min.js"></script>
 <script>
 import InteractiveMap from './components/interactive_map.vue';
-// import SectionAbout from './components/section_about.vue';
-// import SectionContact from './components/section_contact.vue';
+import SectionAbout from './components/section_about.vue';
+import SectionContact from './components/section_contact.vue';
 export default {
 	name: 'app',
 	components: {
-		// SectionAbout,
+		SectionAbout,
 		InteractiveMap,
-		// SectionContact,
+		SectionContact,
 	},
 
 	data() {

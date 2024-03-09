@@ -15,12 +15,14 @@
       return {};
     },
     mounted() {
+      // Configuração da chave de acesso do Mapbox
       mapboxgl.accessToken = 'pk.eyJ1IjoibnlrMTIzIiwiYSI6ImNrdmhmd25qdjJpa2sydXMxMHN3cTF6NTYifQ.S4nAVug9JCv9pCj8oww6wA';
       
       const mapContainer = this.$refs.mapContainer;
   
       // Configuração do mapa estilo globo
       const map1 = new mapboxgl.Map({
+        // Configurações do mapa
         container: mapContainer,
         style: 'mapbox://styles/mapbox/satellite-streets-v12',
         center: [-51.9253, -14.2350], // Centered on Brazil
@@ -32,8 +34,9 @@
         projection: 'globe'
       });
   
-      // Adicionando camada Three.js para representar o mapa em uma esfera
+      // Evento de carregamento do estilo do mapa
       map1.on('style.load', function () {
+        // Lógica para adicionar camadas e configurações adicionais
         const layer = new MapboxLayer({
           id: 'custom_layer',
           type: 'custom',

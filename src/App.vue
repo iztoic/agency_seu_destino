@@ -67,7 +67,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
 <script src="https://raw.githubusercontent.com/IronSummitMedia/startbootstrap/gh-pages/templates/agency/js/bootstrap.min.js"></script>
 <script>
-import InteractiveMap from './components/interactive_map.vue';
+import InteractiveMap from './components/interactive_map_copy.vue';
 import SectionAbout from './components/section_about.vue';
 import SectionContact from './components/section_contact.vue';
 export default {

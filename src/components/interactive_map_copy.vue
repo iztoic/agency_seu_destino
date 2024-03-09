@@ -22,8 +22,9 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import Draggable from 'gsap/Draggable'; // Importe Draggable diretamente de 'gsap'
-import { SplitText } from 'gsap/SplitText'; // Importe SplitText diretamente de 'gsap'
+import gsap from 'gsap';
+import turf from '@turf/turf';
+
 export default {
   name: "InteractiveMap",
   data() {

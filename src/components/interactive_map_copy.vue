@@ -26,12 +26,16 @@ import gsap from 'gsap';
 import turf from '@turf/turf';
 
 export default {
+  // Definição do nome do componente
   name: "InteractiveMap",
+  // Declaração dos dados do componente
   data() {
     return {
       geoJSONData: {
+        // Dados geoJSON para os pontos do mapa
         type: 'FeatureCollection',
         features: [
+          // Lista de pontos com suas propriedades
           {
             type: 'Feature',
             properties: { name: 'Joinville', date: '20/09/2024' },
@@ -64,31 +68,43 @@ export default {
           }
         ]
       },
+      // Índice do ponto atual
       idx: 0,
+      // Objeto do mapa
       map: null,
+      // Marcador no mapa
       marker: null,
+      // Array de posições para animação da linha do tempo
       snaps: [],
+      // Timeline animada
       tl: null,
+      // Elementos DOM relevantes
       $timelineHelper: null,
       $prev: null,
       $next: null,
       $title: null
     };
   },
+  // Método executado após a montagem do componente
   mounted() {
+    // Inicialização dos elementos DOM
     this.$prev = document.querySelector('.prev');
     this.$next = document.querySelector('.next');
     this.$title = document.querySelector('#title');
     this.$timelineHelper = document.querySelector('#timeline .helper');
 
+    // Configuração inicial do título
     this.setTitle(this.geoJSONData.features[this.idx].properties.name);
 
+    // Adiciona listeners para os botões de navegação
     this.$next.addEventListener('click', this.moveToNext);
     this.$prev.addEventListener('click', this.moveToPrevious);
 
     this.snaps = gsap.utils.toArray('.date').map(date => window.innerWidth / 2 - date.offsetLeft);
+    // Inicialização do mapa
     mapboxgl.accessToken = 'pk.eyJ1IjoibnlrMTIzIiwiYSI6ImNrdmhmd25qdjJpa2sydXMxMHN3cTF6NTYifQ.S4nAVug9JCv9pCj8oww6wA';
     this.map = new mapboxgl.Map({
+      // Configuração do mapa
       container: 'map',
       style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: this.geoJSONData.features[this.idx].geometry.coordinates,
@@ -96,7 +112,9 @@ export default {
       antialias: true
     });
 
+    // Evento de carregamento do estilo do mapa
     this.map.on('style.load', () => {
+      // Lógica para adicionar camadas e fontes ao mapa
       const layers = this.map.getStyle().layers;
       let firstSymbolId;
       for (const layer of layers) {
@@ -205,7 +223,9 @@ export default {
     });
   },
   methods: {
+    // Método para mover para um índice específico
     moveToIndex(newIdx, ignoreDrag = false) {
+      // Lógica para movimento entre pontos no mapa
   // Verifica se newIdx está dentro dos limites do array de características
   if (newIdx >= 0 && newIdx < this.geoJSONData.features.length) {
     const { coordinates } = this.geoJSONData.features[newIdx].geometry;
@@ -237,7 +257,9 @@ export default {
     this.idx = newIdx;
   }
 },
+    // Método para definir o título do ponto atual
     setTitle(text) {
+      // Lógica para animação do título
   if (this.$title) {
     const tl = gsap.timeline();
     tl.to(this.$title, {
@@ -253,11 +275,18 @@ export default {
     }, 'a');
   }
     },
+
+
+    // Método para mover para o próximo ponto
     moveToNext() {
+      // Lógica para mover para o próximo ponto na linha do tempo
       const newIdx = (this.idx + 1) % this.geoJSONData.features.length;
       this.moveToIndex(newIdx);
     },
+
+    // Método para mover para o ponto anterior
     moveToPrevious() {
+      // Lógica para mover para o ponto anterior na linha do tempo
       const newIdx = (this.idx === 0 ? this.geoJSONData.features.length : this.idx) - 1;
       this.moveToIndex(newIdx);
     }

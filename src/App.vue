@@ -58,7 +58,7 @@
 
 	</div>
 </template>
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -190,7 +190,7 @@ export default {
 @import url('https://startbootstrap.com/templates/agency/font-awesome-4.1.0/css/font-awesome.min.css');
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
 @import url('https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css');
-@import url('https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css');
+
 
 body {
 	font-family: 'Poppins', sans-serif;

@@ -21,9 +21,12 @@
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl';
-import gsap from 'gsap';
-import turf from '@turf/turf';
+import mapboxgl from "mapbox-gl";
+import gsap from "gsap";
+import { Draggable } from "gsap/all";
+const gsap = require("gsap");
+const Draggable = require("gsap/Draggable");
+import turf from "@turf/turf";
 
 export default {
   // Definição do nome do componente
@@ -168,16 +171,19 @@ export default {
 
     this.$timelineHelper.style.width = this.snaps[this.idx] + 'px';
 
-    const draggable = Draggable.create(this.$timelineHelper, {
+    // Certifique-se de que o elemento DOM está disponível antes de tentar criar Draggable
+    if (this.$timelineHelper) {
+      const draggable = Draggable.create(this.$timelineHelper, {
       type: 'x',
       trigger: this.$timeline,
       inertia: true,
       snap: { x: this.snaps },
       onDragEnd: () => {
-        const newIdx = this.snaps.indexOf(draggable[0].endX);
+        const newIdx = this.snaps.indexOf(draggable.endX);
         this.moveToIndex(newIdx, true);
       }
     });
+  }
 
     window.addEventListener('resize', () => {
       this.snaps = gsap.utils.toArray('.date').map(date => window.innerWidth / 2 - date.offsetLeft);
@@ -188,7 +194,7 @@ export default {
     const el = document.createElement('div');
     el.className = 'marker';
     const img = document.createElement('img');
-    img.src = 'airplane.png';
+    img.src = '../src/components/airplane.png';
     img.style.width = '40px';
     img.style.height = '40px';
     el.appendChild(img);
@@ -300,8 +306,8 @@ export default {
   position: fixed;
   top: 50%;
   height: 140px;
-  left: 0;
-  right: 0;
+  left: 50px;
+  right: 50px;
   margin-top: -70px;
   pointer-events: none;
   display: flex;

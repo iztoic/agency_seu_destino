@@ -32,7 +32,6 @@
 		<div class="layerindex page_about-section">
 			<div class="about-close hover-target"></div>
 			<SectionAbout />
-			<SectionTeam />
 		</div>
 
 		<div class="layerindex page_contact-section">
@@ -59,15 +58,8 @@
 	</div>
 </template>
 
-<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
-<script src="https://raw.githubusercontent.com/IronSummitMedia/startbootstrap/gh-pages/templates/agency/js/bootstrap.min.js"></script>
 <script>
-import InteractiveMap from './components/interactive_map_copy.vue';
+import InteractiveMap from './components/interactive_map.vue';
 import SectionAbout from './components/section_about.vue';
 import SectionContact from './components/section_contact.vue';
 export default {
@@ -356,7 +348,7 @@ a:hover {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 30px 30px;
-	background-image: url('src/assets/img//down.svg');
+	background-image: url('../src/assets/down.svg');
 	opacity: 0.2;
 	-webkit-transition: all 200ms linear;
 	transition: all 200ms linear;
@@ -440,7 +432,7 @@ body.page_clients-on .main-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 30px 30px;
-	background-image: url('src/assets/img/left.svg');
+	background-image: url('../src/assets/left.svg');
 	opacity: 0.2;
 	-webkit-transition: all 200ms linear;
 	transition: all 200ms linear;
@@ -485,7 +477,7 @@ body.about-on .page_about-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 36px 36px;
-	background-image: url('src/assets/img/close.svg');
+	background-image: url('../src/assets/close.svg');
 	cursor: pointer;
 	z-index: 11;
 }
@@ -550,7 +542,7 @@ body.about-on .page_about-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 30px 30px;
-	background-image: url('src/assets/img/left.svg');
+	background-image: url('../src/assets/left.svg');
 	opacity: 0.2;
 	-webkit-transition: all 200ms linear;
 	transition: all 200ms linear;
@@ -562,7 +554,6 @@ body.about-on .page_about-section {
 }
 
 .page_clients-section{
-	background-image: url('src/assets/img/wallpaper_clients.jpg');
 	background-size: cover;
 	background-position: center;
 }
@@ -601,7 +592,7 @@ body.contact-on .page_contact-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 36px 36px;
-	background-image: url('src/assets/img/close.svg');
+	background-image: url('../src/assets/close.svg');
 	cursor: pointer;
 	z-index: 11;
 }
@@ -676,7 +667,7 @@ body.contact-on .page_contact-section {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 36px 36px;
-	background-image: url('src/assets/img/close.svg');
+	background-image: url('../src/assets/close.svg');
 	cursor: pointer;
 	z-index: 11;
 }
@@ -994,7 +985,6 @@ ul.social-buttons li a:active {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), url('src/assets/portifolio/wine_bar.jpg');
     transition: background-color 0.75s;
     z-index: 1;
 }
